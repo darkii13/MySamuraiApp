@@ -53,13 +53,9 @@ namespace SamuraiApp.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("BattleId");
-
                     b.Property<string>("Name");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BattleId");
 
                     b.ToTable("Samurais");
                 });
@@ -77,6 +73,23 @@ namespace SamuraiApp.Data.Migrations
                     b.ToTable("SamuraiBattle");
                 });
 
+            modelBuilder.Entity("SamuraiApp.Domain.SecretIdentity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("RealName");
+
+                    b.Property<int>("SamuraiId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SamuraiId")
+                        .IsUnique();
+
+                    b.ToTable("SecretIdentity");
+                });
+
             modelBuilder.Entity("SamuraiApp.Domain.Quote", b =>
                 {
                     b.HasOne("SamuraiApp.Domain.Samurai", "Samurai")
@@ -85,24 +98,24 @@ namespace SamuraiApp.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("SamuraiApp.Domain.Samurai", b =>
-                {
-                    b.HasOne("SamuraiApp.Domain.Battle")
-                        .WithMany("Samurais")
-                        .HasForeignKey("BattleId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("SamuraiApp.Domain.SamuraiBattle", b =>
                 {
                     b.HasOne("SamuraiApp.Domain.Battle", "Battle")
-                        .WithMany()
+                        .WithMany("SamuraiBattles")
                         .HasForeignKey("BattleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("SamuraiApp.Domain.Samurai", "Samurai")
-                        .WithMany()
+                        .WithMany("SamuraiBattles")
                         .HasForeignKey("SamuraiId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("SamuraiApp.Domain.SecretIdentity", b =>
+                {
+                    b.HasOne("SamuraiApp.Domain.Samurai", "Samurai")
+                        .WithOne("SecretIdentity")
+                        .HasForeignKey("SamuraiApp.Domain.SecretIdentity", "SamuraiId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
         }

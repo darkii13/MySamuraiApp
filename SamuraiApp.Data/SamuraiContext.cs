@@ -9,14 +9,12 @@ namespace SamuraiApp.Data
     public DbSet<Battle> Battles { get; set; }
     public DbSet<Quote> Quotes { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<SamuraiBattle>()
-                .HasKey(s => new { s.BattleId, s.SamuraiId });
-            base.OnModelCreating(modelBuilder);
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+      modelBuilder.Entity<SamuraiBattle>()
+        .HasKey(s => new {s.BattleId, s.SamuraiId});
+    }
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
       optionsBuilder.UseSqlServer(
         "Server = (localdb)\\mssqllocaldb; Database = SamuraiData; Trusted_Connection = True; ");
