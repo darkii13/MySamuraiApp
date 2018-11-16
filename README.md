@@ -1,0 +1,2 @@
+# MySamuraiApp
+EntityFramework coures pluralsight
